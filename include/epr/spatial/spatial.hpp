@@ -5,4 +5,6 @@
 
 #include <epr/spatial/transform/transform3.hpp>
 
+#include <epr/spatial/camera.hpp>
+
 #endif

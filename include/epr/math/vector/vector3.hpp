@@ -40,7 +40,7 @@ namespace epr::math {
             };
         }
 
-        Vector3 operator += (const Vector3 &other) {
+        Vector3 &operator += (const Vector3 &other) {
             x += other.x;
             y += other.y;
             z += other.z;
@@ -48,7 +48,7 @@ namespace epr::math {
             return *this;
         }
     
-        Vector3 operator -= (const Vector3 &other) {
+        Vector3 &operator -= (const Vector3 &other) {
             x -= other.x;
             y -= other.y;
             z -= other.z;

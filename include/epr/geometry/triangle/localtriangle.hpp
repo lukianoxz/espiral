@@ -5,13 +5,11 @@
 #include <epr/spatial/transform/transform3.hpp>
 #include <epr/geometry/vertex.hpp>
 #include <epr/graphics/texture.hpp>
+#include <epr/geometry/triangle/triangle.hpp>
 
 namespace epr::geometry {
-    struct LocalTriangle {
+    struct LocalTriangle : public epr::geometry::Triangle {
         epr::spatial::Transform3 origin;
-        epr::geometry::Vertex vertex[3];
-
-        epr::graphics::Texture internal_texture, external_texture;
     };
 }
 

@@ -5,6 +5,10 @@ project(espiral)
 # library
 add_library(epr STATIC
     src/graphics/display.cpp
+    src/render/process_mesh.cpp
+    src/render/process_rasterize.cpp
+    src/render/process_scanlines.cpp
+    src/render/process_view.cpp
     src/spatial/rotation/rotation3.cpp
 )
 
