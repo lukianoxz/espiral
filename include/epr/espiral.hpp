@@ -1,0 +1,9 @@
+#ifndef EPR_ESPIRAL_HPP
+#define EPR_ESPIRAL_HPP
+
+#include <epr/math/math.hpp>
+#include <epr/spatial/spatial.hpp>
+#include <epr/graphics/graphics.hpp>
+#include <epr/geometry/geometry.hpp>
+
+#endif
