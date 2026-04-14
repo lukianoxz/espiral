@@ -15,7 +15,7 @@
 namespace epr::render {
     class Render {
     public:
-        void render_mesh(std::vector <epr::geometry::Triangle> mesh, epr::spatial::Camera &camera, epr::graphics::Viewport &viewport, epr::render::ZBuffer &z_buffer, epr::render::Scanlines &scanlines) {
+        void render_mesh(std::vector <epr::geometry::Triangle> &mesh, epr::spatial::Camera &camera, epr::graphics::Viewport &viewport, epr::render::ZBuffer &z_buffer, epr::render::Scanlines &scanlines) {
             epr::math::Matrix3 view_matrix = camera.origin.rotation.to_matrix().transpose(); // create inverse rotation matrix
             std::size_t mesh_size = mesh.size();
             epr::geometry::Vertex triangle_vertex[6];
@@ -23,6 +23,8 @@ namespace epr::render {
             float aspect_x = (float)viewport.w / (float)viewport.h;
 
             process_view(mesh, view_matrix, camera);
+            z_buffer.clear();
+            viewport.clear();
 
             for (std::size_t i = 0; i < mesh_size; i++) {
                 epr::geometry::Triangle &triangle = mesh[i];

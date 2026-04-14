@@ -22,8 +22,7 @@ void epr::render::Render::process_mesh(epr::geometry::Triangle &triangle, epr::s
 
     // backface culling
     epr::math::Vector3 normal = triangle.normal();
-    epr::math::Vector3 to_cam = camera.origin.position - triangle.center();
-    if (to_cam.dot(normal) < 0) return;
+    if (triangle.center().dot(normal) > 0) return;
 
     // clipping
     int triangle_vertex_count = 0;

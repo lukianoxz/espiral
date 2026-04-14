@@ -4,8 +4,8 @@ void epr::render::Render::process_rasterize(epr::geometry::Vertex *vertex, epr::
     epr::geometry::Vertex projected_vertex[3];
 
     for (int i = 0; i < 3; i++) {
-        vertex[i].position.z = -vertex[i].position.z;
-        vertex[i].position.x = (1.0f + (vertex[i].position.x * fov) / vertex[i].position.z) * 0.5 * aspect_x * viewport.w;
+        vertex[i].position.z = std::abs(vertex[i].position.z) < 0.0001f ? 0.0001 : std::abs(vertex[i].position.z);
+        vertex[i].position.x = (1.0f + (vertex[i].position.x * fov) / (vertex[i].position.z * aspect_x)) * 0.5 * viewport.w;
         vertex[i].position.y = (1.0f - (vertex[i].position.y * fov) / vertex[i].position.z) * 0.5 * viewport.h;
 
         projected_vertex[i] = vertex[i];

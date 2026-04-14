@@ -4,6 +4,7 @@ project(espiral)
 
 # library
 add_library(epr STATIC
+    src/graphics/texture.cpp
     src/graphics/display.cpp
     src/render/process_mesh.cpp
     src/render/process_rasterize.cpp

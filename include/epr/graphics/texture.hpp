@@ -2,20 +2,18 @@
 #define EPR_GRAPHICS_TEXTURE_HPP
 
 #include <epr/graphics/rgba.hpp>
-#include <memory>
+#include <vector>
+#include <string>
 
 namespace epr::graphics {
     struct Texture {
-        std::unique_ptr <epr::graphics::rgba[]> data;
+        std::vector <epr::graphics::rgba> data;
         int size;
 
-        Texture() :
-            data(nullptr),
-            size(0)
-        {}
+        Texture() = default;
         
         Texture(int size) :
-            data(std::make_unique <epr::graphics::rgba[]> (size * (size + 1) / 2)),
+            data((std::size_t)size * ((std::size_t)size + 1) / 2, epr::graphics::rgba{}),
             size(size)
         {}
 
@@ -26,12 +24,14 @@ namespace epr::graphics {
         void set(float u, float v, const epr::graphics::rgba &new_color) {
             at(u, v) = new_color;
         }
+
+        void load(std::string texture);
     private:
         inline epr::graphics::rgba &at(float u, float v) {
             int y = (int)(v * (float)size);
             int x = (int)(u * (float)(y + 1));
-
-            return data[y * (y + 1) / 2 + x];
+            
+            return data[(std::size_t)(y * (y + 1) / 2 + x)];
         }
     };
 }

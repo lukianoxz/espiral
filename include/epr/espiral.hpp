@@ -6,5 +6,7 @@
 #include <epr/graphics/graphics.hpp>
 #include <epr/geometry/geometry.hpp>
 #include <epr/render/render.hpp>
+#include <epr/logic/logic.hpp>
+#include <epr/input/input.hpp>
 
 #endif

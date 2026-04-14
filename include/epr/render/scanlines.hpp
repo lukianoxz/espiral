@@ -5,7 +5,9 @@
 
 namespace epr::render {
     struct ScanlinesData {
-        int min_x = 0, max_x = 0;
+        int min_x = 100000000, max_x = 0;
+        float z1 = 0.0f, z2 = 0.0f;
+        float u1, u2, v1, v2;
     };
 
     struct Scanlines {
@@ -16,6 +18,12 @@ namespace epr::render {
 
         ScanlinesData &at(int y) {
             return data[y];
+        }
+
+        void clear() {
+            for (int i = 0; i < h; i++) {
+                at(i) = ScanlinesData{};
+            }
         }
     private:
         std::unique_ptr <ScanlinesData[]> data;

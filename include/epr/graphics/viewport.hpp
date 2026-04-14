@@ -18,6 +18,14 @@ namespace epr::graphics {
             *target = color;
         }
 
+        void clear() {
+            for (int i = 0; i < h; i++) {
+                for (int j = 0; j < w; j++) {
+                    *at(j, i) = epr::graphics::rgba{};
+                }
+            }
+        }
+
         epr::graphics::rgba *at(int x, int y) {
             if (x < 0 || x >= w || y < 0 || y >= h) return nullptr;
             return &screen[y * w + x];
