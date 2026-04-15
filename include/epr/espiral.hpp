@@ -8,5 +8,6 @@
 #include <epr/render/render.hpp>
 #include <epr/logic/logic.hpp>
 #include <epr/input/input.hpp>
+#include <epr/scene/scene.hpp>
 
 #endif

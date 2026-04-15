@@ -18,6 +18,10 @@ namespace epr::scene {
             mesh.insert(mesh.end(), mesh_to_add.begin(), mesh_to_add.end());
         }
 
+        void add_mesh(std::vector <epr::geometry::LocalTriangle> mesh_to_add) {
+            mesh.insert(mesh.end(), mesh_to_add.begin(), mesh_to_add.end());
+        }
+
         std::vector <epr::geometry::Triangle> to_world() {
             epr::math::Matrix3 node_matrix = origin.rotation.to_matrix();
             std::vector <epr::geometry::Triangle> world_mesh;
@@ -43,7 +47,7 @@ namespace epr::scene {
                 // apply local triangle rotation
                 for (int j = 0; j < 3; j++) {
                     temp_triangle.vertex[j].position = triangle_matrix * temp_triangle.vertex[j].position;
-                    temp_triangle.vertex[j].position = temp_triangle.vertex[j].position + mesh[i].vertex[j].position + mesh[i].origin.position;
+                    temp_triangle.vertex[j].position = temp_triangle.vertex[j].position + mesh[i].origin.position;
                 }
 
                 // translate trig around node

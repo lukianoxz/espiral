@@ -21,7 +21,7 @@ namespace epr::graphics {
         void clear() {
             for (int i = 0; i < h; i++) {
                 for (int j = 0; j < w; j++) {
-                    *at(j, i) = epr::graphics::rgba{};
+                    *at(j, i) = epr::graphics::rgba{0, 0, 0, 0};
                 }
             }
         }

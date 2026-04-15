@@ -3,7 +3,7 @@
 
 #include <epr/graphics/rgba.hpp>
 #include <epr/graphics/viewport.hpp>
-#include <memory>
+#include <vector>
 #include <string>
 #include <unistd.h>
 
@@ -21,7 +21,7 @@ namespace epr::graphics {
     class Display {
     public:
         Display(int w, int h) :
-            screen(std::make_unique <PixelDisplay[]> (w * (h / 2 + h % 2))),
+            screen(w * (h / 2 + h % 2)),
             w(w),
             h(h) {
             printf("\033[?25l"); // make cursor invisible
@@ -31,11 +31,18 @@ namespace epr::graphics {
         void draw_viewport(int x, int y, epr::graphics::Viewport &viewport);
         void show();
 
+        void clear() {
+            for (int i = 0; i < (h * w) / 2; i++) {
+                screen[i].up = epr::graphics::rgba{};
+                screen[i].down = epr::graphics::rgba{};
+            }
+        }
+
         ~Display() {
             printf("\033[?25h\033[0m"); // make cursor visible and reset all modes
         }
     private:
-        std::unique_ptr <PixelDisplay[]> screen;
+        std::vector <PixelDisplay> screen;
         std::string out_buffer;
         int w, h;
 

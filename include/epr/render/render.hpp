@@ -13,6 +13,13 @@
 #include <memory>
 
 namespace epr::render {
+    struct RenderData {
+        RenderData(int w, int h) : scanlines(h), z_buffer(w, h) {}
+
+        epr::render::Scanlines scanlines;
+        epr::render::ZBuffer z_buffer;
+    };
+
     class Render {
     public:
         void render_mesh(std::vector <epr::geometry::Triangle> &mesh, epr::spatial::Camera &camera, epr::graphics::Viewport &viewport, epr::render::ZBuffer &z_buffer, epr::render::Scanlines &scanlines) {
@@ -37,6 +44,10 @@ namespace epr::render {
                     viewport.draw_pixel(j, i, z_buffer.at(j, i).color);
                 }
             }
+        }
+
+        void render_mesh(std::vector <epr::geometry::Triangle> &mesh, epr::spatial::Camera &camera, epr::graphics::Viewport &viewport, RenderData &render_data) {
+            render_mesh(mesh, camera, viewport, render_data.z_buffer, render_data.scanlines);
         }
     private:
         void process_view(std::vector <epr::geometry::Triangle> &mesh, epr::math::Matrix3 &view_matrix, epr::spatial::Camera &camera);
