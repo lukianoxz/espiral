@@ -31,6 +31,12 @@ namespace epr::render {
 
                 process_mesh(triangle, camera, viewport, triangle_vertex, fov, aspect_x, z_buffer, scanlines);
             }
+
+            for (int i = 0; i < viewport.h; i++) {
+                for (int j = 0; j < viewport.w; j++) {
+                    viewport.draw_pixel(j, i, z_buffer.at(j, i).color);
+                }
+            }
         }
     private:
         void process_view(std::vector <epr::geometry::Triangle> &mesh, epr::math::Matrix3 &view_matrix, epr::spatial::Camera &camera);

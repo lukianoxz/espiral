@@ -13,7 +13,7 @@ namespace epr::graphics {
         Texture() = default;
         
         Texture(int size) :
-            data((std::size_t)size * ((std::size_t)size + 1) / 2, epr::graphics::rgba{}),
+            data((std::size_t)size * size, epr::graphics::rgba{}),
             size(size)
         {}
 
@@ -25,13 +25,16 @@ namespace epr::graphics {
             at(u, v) = new_color;
         }
 
-        void load(std::string texture);
+        static Texture load(std::string &texture);
     private:
         inline epr::graphics::rgba &at(float u, float v) {
             int y = (int)(v * (float)size);
-            int x = (int)(u * (float)(y + 1));
+            int x = (int)(u * (float)(size));
+
+            y = y >= size ? size - 1 : y;
+            x = x >= size ? size - 1 : x;
             
-            return data[(std::size_t)(y * (y + 1) / 2 + x)];
+            return data[y * size + x];
         }
     };
 }

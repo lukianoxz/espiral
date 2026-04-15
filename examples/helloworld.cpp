@@ -11,25 +11,24 @@ int main() {
 
     std::vector <epr::geometry::Triangle> mesh;
 
-    epr::geometry::Triangle trig;
-    trig.vertex[0].position = {0, 1, -3};
-    trig.vertex[1].position = {-1, -1, -3};
-    trig.vertex[2].position = {1, -1, -3};
+    std::string tex = "2;X"
+    "255000000255""000255000255"
+    "000000255255""255000255255"
+    ;
 
-    trig.vertex[0].uv = {0, 1};
-    trig.vertex[1].uv = {1, 1};
-    trig.vertex[2].uv = {1, 0};
-
-    trig.external_texture = epr::graphics::Texture(3);
-
-    trig.external_texture.data[0] = epr::graphics::rgba{255, 0, 0, 255};
-    trig.external_texture.data[1] = epr::graphics::rgba{0, 255, 0, 255};
-    trig.external_texture.data[2] = epr::graphics::rgba{255, 255, 0, 255};
-    trig.external_texture.data[3] = epr::graphics::rgba{255, 255, 0, 55};
-    trig.external_texture.data[4] = epr::graphics::rgba{255, 0, 255, 255};
-    trig.external_texture.data[5] = epr::graphics::rgba{0, 255, 255, 255};
+    epr::geometry::Triangle trig(tex);
+    trig.vertex[0].position = {1, 1, -3};
+    trig.vertex[1].position = {-1, 1, -3};
+    trig.vertex[2].position = {-1, -1, -3};
+    
+    tex[2] = 'F';
+    epr::geometry::Triangle trig2(tex);
+    trig2.vertex[0].position = {-1, -1, -3};
+    trig2.vertex[1].position = {1, -1, -3};
+    trig2.vertex[2].position = {1, 1, -3};
 
     mesh.push_back(trig);
+    mesh.push_back(trig2);
 
     epr::spatial::Camera cam;
     cam.fov = 2.1f;

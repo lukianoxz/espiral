@@ -41,8 +41,10 @@ void epr::render::Render::process_scanlines(epr::geometry::Vertex *vertex, epr::
             if (y < min_y || y > max_y) continue;
 
             int iy = (int)(y + 0.2f);
+
             if (iy < min_y || iy >= max_y) continue;
             epr::render::ScanlinesData &scanlines_data = scanlines.at(iy);
+
             float sz = z < 0.0001f ? 0.0001f : z; // safe z
 
             if (x < scanlines_data.min_x) {
@@ -60,13 +62,9 @@ void epr::render::Render::process_scanlines(epr::geometry::Vertex *vertex, epr::
         }
     }
 
-    float dist_y = (float)(max_y - min_y);
-
     for (int i = min_y; i <= max_y; i++) {
-        float current_dist_y = (float)(max_y - i);
         epr::render::ScanlinesData &current_scanline = scanlines.at(i);
         
-        float v = 1.0f - current_dist_y / dist_y;
         float dist_x = (float)(current_scanline.max_x - current_scanline.min_x);
 
         for (int j = current_scanline.min_x; j < current_scanline.max_x; j++) {
@@ -75,7 +73,6 @@ void epr::render::Render::process_scanlines(epr::geometry::Vertex *vertex, epr::
             float dz = current_scanline.z2 - current_scanline.z1;
             float iz = current_scanline.z1 + dz * t; // interpolated z
 
-            float sz1 = std::abs(current_scanline.z1) < 0.0001f ? 0.0001f : std::abs(current_scanline.z1);
             float inv_z = 1 / current_scanline.z1 + (1 / current_scanline.z2 - 1 / current_scanline.z1) * t;
             float iu = current_scanline.u1 + (current_scanline.u2 - current_scanline.u1) * t;
             float iv = current_scanline.v1 + (current_scanline.v2 - current_scanline.v1) * t;
@@ -83,8 +80,8 @@ void epr::render::Render::process_scanlines(epr::geometry::Vertex *vertex, epr::
             float correct_u = iu / inv_z;
             float correct_v = iv / inv_z;
 
-            correct_u = (correct_u < 0.01f) ? 0.01f : (correct_u > 0.95f) ? 0.95f : correct_u;
-            correct_v = (correct_v < 0.01f) ? 0.01f : (correct_v > 0.95f) ? 0.95f : correct_v;
+            correct_u = (correct_u < 0.01f) ? 0.01f : (correct_u > 0.99f) ? 0.99f : correct_u;
+            correct_v = (correct_v < 0.01f) ? 0.01f : (correct_v > 0.99f) ? 0.99f : correct_v;
 
             if (j < 0 || j >= viewport.w) continue;
 
@@ -94,12 +91,6 @@ void epr::render::Render::process_scanlines(epr::geometry::Vertex *vertex, epr::
                 current_z_buffer.z = iz;
                 current_z_buffer.color = external_texture.get(correct_u, correct_v);
             }
-        }
-    }
-
-    for (int i = 0; i < viewport.h; i++) {
-        for (int j = 0; j < viewport.w; j++) {
-            viewport.draw_pixel(j, i, z_buffer.at(j, i).color);
         }
     }
 }
