@@ -5,5 +5,6 @@
 #include <epr/graphics/viewport.hpp>
 #include <epr/graphics/texture.hpp>
 #include <epr/graphics/display.hpp>
+#include <epr/graphics/imageloader.hpp>
 
 #endif

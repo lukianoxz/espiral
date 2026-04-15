@@ -16,6 +16,12 @@ void epr::render::Render::process_scanlines(epr::geometry::Vertex *vertex, epr::
     max_y = max_y >= viewport.h ? viewport.h - 1 : max_y;
 
     for (int i = 0; i < 3; i++) {
+        vertex[i].uv.x = vertex[i].uv.x / vertex[i].position.z;
+        vertex[i].uv.y = vertex[i].uv.y / vertex[i].position.z;
+        vertex[i].position.z = 1.0f / vertex[i].position.z;
+    }
+
+    for (int i = 0; i < 3; i++) {
         epr::geometry::Vertex vtx1 = vertex[i];
         epr::geometry::Vertex vtx2 = vertex[(i + 1) % 3];
 
@@ -45,19 +51,17 @@ void epr::render::Render::process_scanlines(epr::geometry::Vertex *vertex, epr::
             if (iy < min_y || iy >= max_y) continue;
             epr::render::ScanlinesData &scanlines_data = scanlines.at(iy);
 
-            float sz = z < 0.0001f ? 0.0001f : z; // safe z
-
             if (x < scanlines_data.min_x) {
                 scanlines_data.min_x = x;
                 scanlines_data.z1 = z;
-                scanlines_data.u1 = u / sz;
-                scanlines_data.v1 = v / sz;
+                scanlines_data.u1 = u;
+                scanlines_data.v1 = v;
             }
             if (x > scanlines_data.max_x) {
                 scanlines_data.max_x = x;
                 scanlines_data.z2 = z;
-                scanlines_data.u2 = u / sz;
-                scanlines_data.v2 = v / sz;
+                scanlines_data.u2 = u;
+                scanlines_data.v2 = v;
             }
         }
     }
@@ -73,7 +77,7 @@ void epr::render::Render::process_scanlines(epr::geometry::Vertex *vertex, epr::
             float dz = current_scanline.z2 - current_scanline.z1;
             float iz = current_scanline.z1 + dz * t; // interpolated z
 
-            float inv_z = 1 / current_scanline.z1 + (1 / current_scanline.z2 - 1 / current_scanline.z1) * t;
+            float inv_z = current_scanline.z1 + (current_scanline.z2 - current_scanline.z1) * t;
             float iu = current_scanline.u1 + (current_scanline.u2 - current_scanline.u1) * t;
             float iv = current_scanline.v1 + (current_scanline.v2 - current_scanline.v1) * t;
 

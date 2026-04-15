@@ -12,7 +12,7 @@ namespace epr::logic::motion {
     }
 
     static void Move(direction::Direction direction, epr::spatial::Transform3 &origin, float speed, float delta) {
-        epr::math::Matrix3 rotation_matrix = origin.rotation.to_matrix();
+        epr::math::Matrix3 rotation_matrix = origin.rotation.create_yaw_matrix();
 
         epr::math::Vector3 forward = rotation_matrix * (epr::math::Vector3{0.0f, 0, 1.0f} * speed * delta);
         epr::math::Vector3 right = rotation_matrix * (epr::math::Vector3{1.0f, 0, 0.0f} * speed * delta);

@@ -1,4 +1,5 @@
 #include <epr/espiral.hpp>
+#include <chrono>
 
 int main() {
     int screen_w = 110, screen_h = 70;
@@ -8,15 +9,12 @@ int main() {
     epr::render::Render render;
     epr::render::RenderData render_data(screen_w, screen_h);
 
-    std::string tex = "2;X"
-    "255000000255""000255000255"
-    "000000255255""255000255255"
-    ;
+    std::string wall = epr::graphics::load_image("whysoserios.txt");
 
     epr::scene::Node node;
 
-    node.mesh = epr::geometry::mesh::generate_quad({0, 0, -6}, tex);
-    node.add_mesh(epr::geometry::mesh::generate_quad({{-1, 0, -5}, {0, 1.57, 0}}, tex));
+    node.mesh = epr::geometry::mesh::generate_quad({0, 0, -6}, wall);
+    node.add_mesh(epr::geometry::mesh::generate_quad({{-1, 0, -5}, {0, 1.57, 0}}, wall));
     std::vector <epr::geometry::Triangle> mesh;
     bool running = true;
 
@@ -25,33 +23,31 @@ int main() {
     cam.near = -0.1f;
     cam.view_distance = -40;
 
+    auto prev_frame = std::chrono::high_resolution_clock::now();
+
     while (running) {
+        auto actual_frame = std::chrono::high_resolution_clock::now();
+        std::chrono::duration <float> duration = actual_frame - prev_frame;
+        float delta = duration.count();
+
         int c;
-        while ((c = epr::input::getch()) != EOF) {
+        if ((c = epr::input::getch()) != EOF) {
             switch (c) {
-                case 'w':
-                    epr::logic::motion::Move(epr::logic::motion::direction::FORWARD, cam.origin, 0.2f, 1.0f);
-                    break;
-                case 's':
-                    epr::logic::motion::Move(epr::logic::motion::direction::BACKWARD, cam.origin, 0.2f, 1.0f);
-                    break;
-                case 'a':
-                    epr::logic::motion::Move(epr::logic::motion::direction::LEFT, cam.origin, 0.2f, 1.0f);
-                    break;
-                case 'd':
-                    epr::logic::motion::Move(epr::logic::motion::direction::RIGHT, cam.origin, 0.2f, 1.0f);
-                    break;
-                case 'j':
-                    cam.origin.rotation.rotation.y += 0.1f;
-                    break;
-                case 'l':
-                    cam.origin.rotation.rotation.y -= 0.1f;
-                    break;
-                case 'q':
-                    running = false;
-                    break;
+                case 'w': epr::logic::motion::Move(epr::logic::motion::direction::FORWARD, cam.origin, 3.2f, delta); break;
+                case 's': epr::logic::motion::Move(epr::logic::motion::direction::BACKWARD, cam.origin, 3.2f, delta); break;
+                case 'a': epr::logic::motion::Move(epr::logic::motion::direction::LEFT, cam.origin, 3.2f, delta); break;
+                case 'd': epr::logic::motion::Move(epr::logic::motion::direction::RIGHT, cam.origin, 3.2f, delta); break;
+                case 'j': cam.origin.rotation.rotation.y += 1.6f * delta; break;
+                case 'l': cam.origin.rotation.rotation.y -= 1.6f * delta; break;
+                case 'i': cam.origin.rotation.rotation.x += 1.6f * delta; break;
+                case 'k': cam.origin.rotation.rotation.x -= 1.6f * delta; break;
+                case 'q': running = false; break;
             }
         }
+
+        std::cout << "FPS: " << 1.0f / delta << "\n";
+
+        prev_frame = actual_frame;
 
         mesh = node.to_world();
 
