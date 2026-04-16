@@ -9,12 +9,18 @@ int main() {
     epr::render::Render render;
     epr::render::RenderData render_data(screen_w, screen_h);
 
-    std::string wall = epr::graphics::load_image("whysoserios.txt");
+    std::string whysoserios_string = epr::graphics::load_image("../utils/images/whysoserios.txt");
+    epr::graphics::Texture whysoserios_texture = epr::graphics::Texture::load(whysoserios_string);
+    epr::graphics::Texture inverse_whysoserios_texture = whysoserios_texture.inverse();
 
     epr::scene::Node node;
 
-    node.mesh = epr::geometry::mesh::generate_quad({0, 0, -6}, wall);
-    node.add_mesh(epr::geometry::mesh::generate_quad({{-1, 0, -5}, {0, 1.57, 0}}, wall));
+    node.mesh = epr::geometry::mesh::generate_quad({0, 0, -6}, whysoserios_texture, inverse_whysoserios_texture);
+    node.add_mesh(epr::geometry::mesh::generate_quad({{-1, 0, -5}, {0, 1.57f, 0}}, whysoserios_texture, inverse_whysoserios_texture));
+    node.add_mesh(epr::geometry::mesh::generate_quad({{0, 0, -4}, {0, 3.14f, 0}}, whysoserios_texture, inverse_whysoserios_texture));
+    node.add_mesh(epr::geometry::mesh::generate_quad({{1, 0, -5}, {0, -1.57f, 0}}, whysoserios_texture, inverse_whysoserios_texture));
+    node.add_mesh(epr::geometry::mesh::generate_quad({{0, -1, -5}, {-1.57f, 0, 0}}, whysoserios_texture, inverse_whysoserios_texture));
+    node.add_mesh(epr::geometry::mesh::generate_quad({{0, 1, -5}, {1.57f, 0, 0}}, whysoserios_texture, inverse_whysoserios_texture));
     std::vector <epr::geometry::Triangle> mesh;
     bool running = true;
 

@@ -5,8 +5,8 @@
 epr::graphics::Texture epr::graphics::Texture::load(std::string &texture) {
     int cursor = 0;
 
-    int texture_size = 0;
-    bool flip_texture = false;
+    int texture_size_x = 0;
+    int texture_size_y = 0;
 
     std::string acc = "";
 
@@ -15,17 +15,22 @@ epr::graphics::Texture epr::graphics::Texture::load(std::string &texture) {
         cursor++;
     }
     cursor++;
-    texture_size = std::stoi(acc);
+    texture_size_x = std::stoi(acc);
     acc.clear();
 
-    epr::graphics::Texture temp_texture(texture_size);
-
-    if (texture[cursor] == 'F') flip_texture = true;
+    while (texture[cursor] != ';') {
+        acc += texture[cursor];
+        cursor++;
+    }
     cursor++;
+    texture_size_y = std::stoi(acc);
+    acc.clear();
+
+    epr::graphics::Texture temp_texture(texture_size_x, texture_size_y);
 
     std::vector <epr::graphics::rgba> converted_texture;
 
-    for (int i = 0; i < (texture_size * texture_size); i++) {
+    for (int i = 0; i < (texture_size_y * texture_size_x); i++) {
         epr::graphics::rgba temp_color;
 
         // channel red
@@ -50,19 +55,8 @@ epr::graphics::Texture epr::graphics::Texture::load(std::string &texture) {
 
         converted_texture.push_back(temp_color);
     }
-
-    if (flip_texture) {
-        temp_texture.data = converted_texture;
-    } else {
-        for (int i = 0; i < texture_size; i++) {
-            for (int j = 0; j < texture_size; j++) {
-                int inverse_i = texture_size - 1 - i;
-                int inverse_j = texture_size - 1 - j;
-
-                temp_texture.data[i * texture_size + j] = converted_texture[inverse_i * texture_size + inverse_j];
-            }
-        }
-    }
+    
+    temp_texture.data = std::move(converted_texture);
 
     return temp_texture;
 }

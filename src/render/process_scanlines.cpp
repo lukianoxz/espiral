@@ -90,9 +90,10 @@ void epr::render::Render::process_scanlines(epr::geometry::Vertex *vertex, epr::
             if (j < 0 || j >= viewport.w) continue;
 
             epr::render::ZBufferData &current_z_buffer = z_buffer.at(j, i);
+            float correct_z = 1.0f / iz;
 
-            if (iz < current_z_buffer.z) {
-                current_z_buffer.z = iz;
+            if (correct_z < current_z_buffer.z) {
+                current_z_buffer.z = correct_z;
                 current_z_buffer.color = external_texture.get(correct_u, correct_v);
             }
         }

@@ -8,13 +8,14 @@
 namespace epr::graphics {
     struct Texture {
         std::vector <epr::graphics::rgba> data;
-        int size;
+        int size_x, size_y;
 
         Texture() = default;
         
-        Texture(int size) :
-            data((std::size_t)size * size, epr::graphics::rgba{}),
-            size(size)
+        Texture(int size_x, int size_y) :
+            data(size_x * size_y, epr::graphics::rgba{}),
+            size_x(size_x),
+            size_y(size_y)
         {}
 
         epr::graphics::rgba get(float u, float v) {
@@ -26,15 +27,30 @@ namespace epr::graphics {
         }
 
         static Texture load(std::string &texture);
+
+        Texture inverse() {
+            Texture temp_texture(size_x, size_y);
+
+            for (int i = 0; i < size_y; i++) {
+                for (int j = 0; j < size_x; j++) {
+                    int inverse_i = size_y - 1 - i;
+                    int inverse_j = size_x - 1 - j;
+
+                    temp_texture.data[i * size_x + j] = data[inverse_i * size_x + inverse_j];
+                }
+            }
+
+            return temp_texture;
+        }
     private:
         inline epr::graphics::rgba &at(float u, float v) {
-            int y = (int)(v * (float)size);
-            int x = (int)(u * (float)(size));
+            int y = (int)(v * (float)size_y);
+            int x = (int)(u * (float)size_x);
 
-            y = y >= size ? size - 1 : y;
-            x = x >= size ? size - 1 : x;
+            y = y >= size_y ? size_y - 1 : y;
+            x = x >= size_x ? size_x - 1 : x;
             
-            return data[y * size + x];
+            return data[y * size_x + x];
         }
     };
 }

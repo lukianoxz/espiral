@@ -2,9 +2,12 @@ from PIL import Image
 
 img_file = str(input('Type here the name of your image: '))
 img = Image.open(img_file).convert('RGBA')
+img = img.transpose(Image.FLIP_TOP_BOTTOM)
+img = img.transpose(Image.FLIP_LEFT_RIGHT)
+
 img_w, img_h = img.size
 
-texture = f'{img_w};X'
+texture = f'{img_w};{img_h};'
 
 for y in range(img_h):
     for x in range(img_w):
