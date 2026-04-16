@@ -30,6 +30,14 @@ namespace epr::math {
                 z * f
             };
         }
+        
+        Vector3 operator * (const Vector3 &other) const {
+            return {
+                x * other.x,
+                y * other.y,
+                z * other.z
+            };
+        }
 
         Vector3 operator / (float f) const {
             if (f == 0) return {0, 0, 0};
