@@ -15,13 +15,19 @@ int main() {
 
     epr::scene::Node node;
 
-    node.mesh = epr::geometry::mesh::generate_quad({0, 0, -6}, {1, 1}, whysoserios_texture, inverse_whysoserios_texture);
-    node.add_mesh(epr::geometry::mesh::generate_quad({{-1, 0, -5}, {0, 1.57f, 0}}, {1, 1}, whysoserios_texture, inverse_whysoserios_texture));
-    node.add_mesh(epr::geometry::mesh::generate_quad({{0, 0, -4}, {0, 3.14f, 0}}, {1, 1}, whysoserios_texture, inverse_whysoserios_texture));
-    node.add_mesh(epr::geometry::mesh::generate_quad({{1, 0, -5}, {0, -1.57f, 0}}, {1, 1}, whysoserios_texture, inverse_whysoserios_texture));
-    node.add_mesh(epr::geometry::mesh::generate_quad({{0, -1, -5}, {-1.57f, 0, 0}}, {1, 1}, whysoserios_texture, inverse_whysoserios_texture));
-    node.add_mesh(epr::geometry::mesh::generate_quad({{0, 1, -5}, {1.57f, 0, 0}}, {1, 1}, whysoserios_texture, inverse_whysoserios_texture));
-    node.add_mesh(epr::geometry::mesh::generate_plane({{2, -1, -3}, {-1.57f, 0, 0}}, {1, 1}, {3, 3}, whysoserios_texture, inverse_whysoserios_texture));
+    node.mesh = epr::geometry::mesh::generate_quad({0, 0, -2}, {1, 1}, whysoserios_texture, inverse_whysoserios_texture);
+    node.add_mesh(epr::geometry::mesh::generate_quad({{-1, 0, -1}, {0, 1.57f, 0}}, {1, 1}, whysoserios_texture, inverse_whysoserios_texture));
+    node.add_mesh(epr::geometry::mesh::generate_quad({{0, 0, 0}, {0, 3.14f, 0}}, {1, 1}, whysoserios_texture, inverse_whysoserios_texture));
+    node.add_mesh(epr::geometry::mesh::generate_quad({{1, 0, -1}, {0, -1.57f, 0}}, {1, 1}, whysoserios_texture, inverse_whysoserios_texture));
+    node.add_mesh(epr::geometry::mesh::generate_quad({{0, -1, -1}, {-1.57f, 0, 0}}, {1, 1}, whysoserios_texture, inverse_whysoserios_texture));
+    node.add_mesh(epr::geometry::mesh::generate_quad({{0, 1, -1}, {1.57f, 0, 0}}, {1, 1}, whysoserios_texture, inverse_whysoserios_texture));
+    
+    node.add_mesh(epr::geometry::mesh::generate_plane({{0, -2.5f, 0}, {-1.57f, 0, 0}}, {5, 5}, {5, 5}, whysoserios_texture, inverse_whysoserios_texture));
+    node.add_mesh(epr::geometry::mesh::generate_plane({{0, 2.5f, 0}, {1.57f, 0, 0}}, {5, 5}, {5, 5}, whysoserios_texture, inverse_whysoserios_texture));
+    node.add_mesh(epr::geometry::mesh::generate_plane({{0, 0, -2.5f}, {0, 0, 0}}, {5, 5}, {5, 5}, whysoserios_texture, inverse_whysoserios_texture));
+    node.add_mesh(epr::geometry::mesh::generate_plane({{0, 0, 2.5f}, {0, 3.14f, 0}}, {5, 5}, {5, 5}, whysoserios_texture, inverse_whysoserios_texture));
+    node.add_mesh(epr::geometry::mesh::generate_plane({{-2.5f, 0, 0}, {0, 1.57f, 0}}, {5, 5}, {5, 5}, whysoserios_texture, inverse_whysoserios_texture));
+    node.add_mesh(epr::geometry::mesh::generate_plane({{2.5f, 0, 0}, {0, -1.57f, 0}}, {5, 5}, {5, 5}, whysoserios_texture, inverse_whysoserios_texture));
     std::vector <epr::geometry::Triangle> mesh;
     bool running = true;
 

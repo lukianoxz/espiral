@@ -7,7 +7,7 @@
 namespace epr::render {
     struct ZBufferData {
         epr::graphics::rgba color;
-        float z = 100000000.0f;
+        float z = -1.0f;
     };
 
     struct ZBuffer {

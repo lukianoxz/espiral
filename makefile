@@ -16,7 +16,7 @@ _init:
 	@mkdir -p build
 
 _build:
-	cd build && cmake -DEPR_EXEC_NAME=$(e) -DEPR_EXAMPLE_NAME=$(f) .. && make
+	cd build && cmake -DCMAKE_BUILD_TYPE=Release -DEPR_EXEC_NAME=$(e) -DEPR_EXAMPLE_NAME=$(f) .. && make -j$$(nproc)
 
 _run:
 	@if [ "$(cls)" = "s" ]; then \

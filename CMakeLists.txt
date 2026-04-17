@@ -2,6 +2,10 @@ cmake_minimum_required(VERSION 3.10)
 
 project(espiral)
 
+# flags
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 -march=native -ffast-math -funroll-loops -falign-functions -falign-loops")
+set(CMAKE_INTERPROCEDURAL_OPTIMIZATION TRUE)
+
 # library
 add_library(epr STATIC
     src/graphics/texture.cpp
@@ -14,6 +18,12 @@ add_library(epr STATIC
 )
 
 target_include_directories(epr PUBLIC include)
+
+# find_package(OpenMP REQUIRED)
+
+# if(OpenMP_CXX_FOUND)
+#     target_link_libraries(epr PUBLIC OpenMP::OpenMP_CXX)
+# endif()
 
 # executable name && example to compile
 set(EPR_EXEC_NAME "" CACHE STRING "")

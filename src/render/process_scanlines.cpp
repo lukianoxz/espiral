@@ -44,11 +44,9 @@ void epr::render::Render::process_scanlines(epr::geometry::Vertex *vertex, epr::
             float u = vtx1.uv.x + du * t;
             float v = vtx1.uv.y + dv * t;
 
-            if (y < min_y || y > max_y) continue;
+            int iy = (int)(y + 0.5f);
+            if (iy < min_y || iy > max_y) continue;
 
-            int iy = (int)(y + 0.2f);
-
-            if (iy < min_y || iy >= max_y) continue;
             epr::render::ScanlinesData &scanlines_data = scanlines.at(iy);
 
             if (x < scanlines_data.min_x) {
@@ -71,29 +69,29 @@ void epr::render::Render::process_scanlines(epr::geometry::Vertex *vertex, epr::
         
         float dist_x = (float)(current_scanline.max_x - current_scanline.min_x);
 
+        float dif_z = current_scanline.z2 - current_scanline.z1;
+        float dif_u = current_scanline.u2 - current_scanline.u1;
+        float dif_v = current_scanline.v2 - current_scanline.v1;
+
         for (int j = current_scanline.min_x; j < current_scanline.max_x; j++) {
+            if (j < 0 || j >= viewport.w) continue;
+            
             float t = (float)(j - current_scanline.min_x) / dist_x;
             
-            float dz = current_scanline.z2 - current_scanline.z1;
-            float iz = current_scanline.z1 + dz * t; // interpolated z
-
-            float inv_z = current_scanline.z1 + (current_scanline.z2 - current_scanline.z1) * t;
-            float iu = current_scanline.u1 + (current_scanline.u2 - current_scanline.u1) * t;
-            float iv = current_scanline.v1 + (current_scanline.v2 - current_scanline.v1) * t;
+            float inv_z = current_scanline.z1 + dif_z * t;
+            float iu = current_scanline.u1 + dif_u * t;
+            float iv = current_scanline.v1 + dif_v * t;
 
             float correct_u = iu / inv_z;
             float correct_v = iv / inv_z;
 
             correct_u = (correct_u < 0.01f) ? 0.01f : (correct_u > 0.99f) ? 0.99f : correct_u;
             correct_v = (correct_v < 0.01f) ? 0.01f : (correct_v > 0.99f) ? 0.99f : correct_v;
-
-            if (j < 0 || j >= viewport.w) continue;
-
+            
             epr::render::ZBufferData &current_z_buffer = z_buffer.at(j, i);
-            float correct_z = 1.0f / iz;
 
-            if (correct_z < current_z_buffer.z) {
-                current_z_buffer.z = correct_z;
+            if (inv_z > current_z_buffer.z) {
+                current_z_buffer.z = inv_z;
                 current_z_buffer.color = external_texture.get(correct_u, correct_v);
             }
         }
