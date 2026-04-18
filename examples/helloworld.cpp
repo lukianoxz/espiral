@@ -16,18 +16,18 @@ int main() {
     epr::scene::Node node;
 
     node.mesh = epr::geometry::mesh::generate_quad({0, 0, -2}, {1, 1}, whysoserios_texture, inverse_whysoserios_texture);
-    node.add_mesh(epr::geometry::mesh::generate_quad({{-1, 0, -1}, {0, 1.57f, 0}}, {1, 1}, whysoserios_texture, inverse_whysoserios_texture));
-    node.add_mesh(epr::geometry::mesh::generate_quad({{0, 0, 0}, {0, 3.14f, 0}}, {1, 1}, whysoserios_texture, inverse_whysoserios_texture));
-    node.add_mesh(epr::geometry::mesh::generate_quad({{1, 0, -1}, {0, -1.57f, 0}}, {1, 1}, whysoserios_texture, inverse_whysoserios_texture));
-    node.add_mesh(epr::geometry::mesh::generate_quad({{0, -1, -1}, {-1.57f, 0, 0}}, {1, 1}, whysoserios_texture, inverse_whysoserios_texture));
-    node.add_mesh(epr::geometry::mesh::generate_quad({{0, 1, -1}, {1.57f, 0, 0}}, {1, 1}, whysoserios_texture, inverse_whysoserios_texture));
+    node.add_mesh(epr::geometry::mesh::generate_quad({{-1, 0, -1}, {1.57f, 0, 0}}, {1, 1}, whysoserios_texture, inverse_whysoserios_texture));
+    node.add_mesh(epr::geometry::mesh::generate_quad({{0, 0, 0}, {3.14f, 0, 0}}, {1, 1}, whysoserios_texture, inverse_whysoserios_texture));
+    node.add_mesh(epr::geometry::mesh::generate_quad({{1, 0, -1}, {-1.57f, 0, 0}}, {1, 1}, whysoserios_texture, inverse_whysoserios_texture));
+    node.add_mesh(epr::geometry::mesh::generate_quad({{0, -1, -1}, {0, -1.57f, 0}}, {1, 1}, whysoserios_texture, inverse_whysoserios_texture));
+    node.add_mesh(epr::geometry::mesh::generate_quad({{0, 1, -1}, {0, 1.57f, 0}}, {1, 1}, whysoserios_texture, inverse_whysoserios_texture));
     
-    node.add_mesh(epr::geometry::mesh::generate_plane({{0, -2.5f, 0}, {-1.57f, 0, 0}}, {5, 5}, {5, 5}, whysoserios_texture, inverse_whysoserios_texture));
-    node.add_mesh(epr::geometry::mesh::generate_plane({{0, 2.5f, 0}, {1.57f, 0, 0}}, {5, 5}, {5, 5}, whysoserios_texture, inverse_whysoserios_texture));
+    node.add_mesh(epr::geometry::mesh::generate_plane({{0, -2.5f, 0}, {0, -1.57f, 0}}, {5, 5}, {5, 5}, whysoserios_texture, inverse_whysoserios_texture));
+    node.add_mesh(epr::geometry::mesh::generate_plane({{0, 2.5f, 0}, {0, 1.57f, 0}}, {5, 5}, {5, 5}, whysoserios_texture, inverse_whysoserios_texture));
     node.add_mesh(epr::geometry::mesh::generate_plane({{0, 0, -2.5f}, {0, 0, 0}}, {5, 5}, {5, 5}, whysoserios_texture, inverse_whysoserios_texture));
-    node.add_mesh(epr::geometry::mesh::generate_plane({{0, 0, 2.5f}, {0, 3.14f, 0}}, {5, 5}, {5, 5}, whysoserios_texture, inverse_whysoserios_texture));
-    node.add_mesh(epr::geometry::mesh::generate_plane({{-2.5f, 0, 0}, {0, 1.57f, 0}}, {5, 5}, {5, 5}, whysoserios_texture, inverse_whysoserios_texture));
-    node.add_mesh(epr::geometry::mesh::generate_plane({{2.5f, 0, 0}, {0, -1.57f, 0}}, {5, 5}, {5, 5}, whysoserios_texture, inverse_whysoserios_texture));
+    node.add_mesh(epr::geometry::mesh::generate_plane({{0, 0, 2.5f}, {3.14f, 0, 0}}, {5, 5}, {5, 5}, whysoserios_texture, inverse_whysoserios_texture));
+    node.add_mesh(epr::geometry::mesh::generate_plane({{-2.5f, 0, 0}, {1.57f, 0, 0}}, {5, 5}, {5, 5}, whysoserios_texture, inverse_whysoserios_texture));
+    node.add_mesh(epr::geometry::mesh::generate_plane({{2.5f, 0, 0}, {-1.57f, 0, 0}}, {5, 5}, {5, 5}, whysoserios_texture, inverse_whysoserios_texture));
     std::vector <epr::geometry::Triangle> mesh;
     bool running = true;
 
@@ -50,10 +50,10 @@ int main() {
                 case 's': epr::logic::motion::Move(epr::logic::motion::direction::BACKWARD, cam.origin, 3.2f, delta); break;
                 case 'a': epr::logic::motion::Move(epr::logic::motion::direction::LEFT, cam.origin, 3.2f, delta); break;
                 case 'd': epr::logic::motion::Move(epr::logic::motion::direction::RIGHT, cam.origin, 3.2f, delta); break;
-                case 'j': cam.origin.rotation.rotation.y += 1.6f * delta; break;
-                case 'l': cam.origin.rotation.rotation.y -= 1.6f * delta; break;
-                case 'i': cam.origin.rotation.rotation.x += 1.6f * delta; break;
-                case 'k': cam.origin.rotation.rotation.x -= 1.6f * delta; break;
+                case 'j': cam.origin.rotation.yaw += 1.6f * delta; break;
+                case 'l': cam.origin.rotation.yaw -= 1.6f * delta; break;
+                case 'i': cam.origin.rotation.pitch += 1.6f * delta; break;
+                case 'k': cam.origin.rotation.pitch -= 1.6f * delta; break;
                 case 'q': running = false; break;
             }
         }

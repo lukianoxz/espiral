@@ -6,7 +6,7 @@
 
 namespace epr::spatial {
     struct Rotation3 {
-        epr::math::Vector3 rotation;
+        float yaw, pitch, roll;
 
         epr::math::Matrix3 create_yaw_matrix();
         epr::math::Matrix3 create_pitch_matrix();
