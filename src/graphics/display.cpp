@@ -1,4 +1,4 @@
-#include <epr/graphics/display.hpp>
+#include <epr/graphics/driver/cli_display.hpp>
 
 epr::graphics::rgba *epr::graphics::Display::at(int x, int y) {
     if (y < 0 || y >= h || x < 0 || x >= w) return nullptr;

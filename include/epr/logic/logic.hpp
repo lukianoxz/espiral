@@ -1,5 +1,5 @@
-#ifndef EPR_LOGIC_HPP
-#define EPR_LOGIC_HPP
+#ifndef EPR_LOGIC_LOGIC_HPP
+#define EPR_LOGIC_LOGIC_HPP
 
 #include <epr/logic/motion/move.hpp>
 

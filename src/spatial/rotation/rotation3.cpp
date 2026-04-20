@@ -1,4 +1,4 @@
-#include <epr/spatial/rotation/rotation3.hpp>
+#include <epr/core/spatial/rotation/rotation3.hpp>
 
 #include <cmath>
 

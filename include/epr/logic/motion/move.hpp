@@ -1,8 +1,7 @@
-#ifndef EPR_LOGIC_MOVE_HPP
-#define EPR_LOGIC_MOVE_HPP
+#ifndef EPR_LOGIC_MOTION_MOVE_HPP
+#define EPR_LOGIC_MOTION_MOVE_HPP
 
-#include <epr/math/math.hpp>
-#include <epr/spatial/spatial.hpp>
+#include <epr/core/core.hpp>
 
 namespace epr::logic::motion {
     namespace direction {

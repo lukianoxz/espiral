@@ -1,4 +1,4 @@
-#include <epr/render/render.hpp>
+#include <epr/graphics/render/render.hpp>
 
 void epr::render::Render::process_view(std::vector <epr::geometry::Triangle> &mesh, epr::math::Matrix3 &view_matrix, epr::spatial::Camera &camera) {
     std::size_t mesh_size = mesh.size();

@@ -1,7 +1,7 @@
 #ifndef EPR_GRAPHICS_TEXTURE_HPP
 #define EPR_GRAPHICS_TEXTURE_HPP
 
-#include <epr/graphics/rgba.hpp>
+#include <epr/graphics/core/rgba.hpp>
 #include <vector>
 #include <string>
 

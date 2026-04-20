@@ -19,15 +19,37 @@ add_library(epr STATIC
 
 target_include_directories(epr PUBLIC include)
 
-# find_package(OpenMP REQUIRED)
+set(epr_dependencies
+    OpenMP
+    SDL3
+)
 
-# if(OpenMP_CXX_FOUND)
-#     target_link_libraries(epr PUBLIC OpenMP::OpenMP_CXX)
-# endif()
+foreach(lib ${epr_dependencies})
+    find_package(${lib} REQUIRED)
+
+    if(${lib}_FOUND)
+        string(TOUPPER ${lib} LIB_NAME_UPPER)
+        target_compile_definitions(epr PUBLIC EPR_HAS_${LIB_NAME_UPPER})
+
+        if(TARGET ${lib}::${lib})
+            target_link_libraries(epr PUBLIC ${lib}::${lib})
+        elseif(${lib} STREQUAL "OpenMP")
+            target_link_libraries(epr PUBLIC OpenMP::OpenMP_CXX)
+        endif()
+    endif()
+endforeach()
 
 # executable name && example to compile
 set(EPR_EXEC_NAME "" CACHE STRING "")
 set(EPR_EXAMPLE_NAME "" CACHE STRING "")
+
+if("${EPR_EXEC_NAME}" STREQUAL "")
+    set(EPR_EXEC_NAME "executable")
+endif()
+
+if("${EPR_EXAMPLE_NAME}" STREQUAL "")
+    set(EPR_EXAMPLE_NAME "helloworld")
+endif()
 
 add_executable(${EPR_EXEC_NAME} examples/${EPR_EXAMPLE_NAME}.cpp)
 

@@ -1,13 +1,23 @@
 #include <epr/espiral.hpp>
-#include <chrono>
+#include <algorithm>
+
+#ifndef EPR_HAS_SDL3
+    #define WARNING std::cerr << "Error, you dont have sdl3\n"; std::exit(-1);
+#else
+    #define WARNING
+#endif
+
+#define EPR_WIDTH 640
+#define EPR_HIGH 360
 
 int main() {
-    int screen_w = 110, screen_h = 70;
-    epr::graphics::Display disp(screen_w, screen_h);
-    epr::graphics::Viewport viewport(screen_w, screen_h);
+    WARNING
+    epr::graphics::SDLWrapper sdl_window(SDL_INIT_VIDEO, EPR_WIDTH, EPR_HIGH, "espiral", 2);
+
+    epr::graphics::Viewport viewport(EPR_WIDTH, EPR_HIGH);
 
     epr::render::Render render;
-    epr::render::RenderData render_data(screen_w, screen_h);
+    epr::render::RenderData render_data(EPR_WIDTH, EPR_HIGH);
 
     std::string whysoserios_string = epr::system::io::load_file("../utils/images/whysoserios.txt");
     epr::graphics::Texture whysoserios_texture = epr::graphics::Texture::load(whysoserios_string);
@@ -38,36 +48,55 @@ int main() {
 
     auto prev_frame = std::chrono::high_resolution_clock::now();
 
-    while (running) {
+    SDL_Event sdl_event;
+    bool is_running = true;
+    float mouse_sensi = 0.01f;
+
+    bool mouse_cap = true;
+    auto mouse_cap_frame = std::chrono::high_resolution_clock::now();
+    SDL_SetWindowRelativeMouseMode(sdl_window.sdl_window, mouse_cap);
+
+    while (is_running) {
+        mesh = node.to_world();
+
         auto actual_frame = std::chrono::high_resolution_clock::now();
         std::chrono::duration <float> duration = actual_frame - prev_frame;
         float delta = duration.count();
 
-        int c;
-        if ((c = epr::system::io::getch()) != EOF) {
-            switch (c) {
-                case 'w': epr::logic::motion::Move(epr::logic::motion::direction::FORWARD, cam.origin, 3.2f, delta); break;
-                case 's': epr::logic::motion::Move(epr::logic::motion::direction::BACKWARD, cam.origin, 3.2f, delta); break;
-                case 'a': epr::logic::motion::Move(epr::logic::motion::direction::LEFT, cam.origin, 3.2f, delta); break;
-                case 'd': epr::logic::motion::Move(epr::logic::motion::direction::RIGHT, cam.origin, 3.2f, delta); break;
-                case 'j': cam.origin.rotation.yaw += 1.6f * delta; break;
-                case 'l': cam.origin.rotation.yaw -= 1.6f * delta; break;
-                case 'i': cam.origin.rotation.pitch += 1.6f * delta; break;
-                case 'k': cam.origin.rotation.pitch -= 1.6f * delta; break;
-                case 'q': running = false; break;
+        while (SDL_PollEvent(&sdl_event)) {
+            if (sdl_event.type == SDL_EVENT_QUIT) is_running = false;
+            if (sdl_event.key.key == SDLK_ESCAPE) {
+                 std::chrono::duration <float> elapsed = actual_frame - mouse_cap_frame;
+
+                if (elapsed.count() > 0.3f) {
+                    mouse_cap = !mouse_cap;
+                    SDL_SetWindowRelativeMouseMode(sdl_window.sdl_window, mouse_cap);
+                    mouse_cap_frame = actual_frame;
+                }
+            }
+
+            if (sdl_event.type == SDL_EVENT_MOUSE_MOTION && mouse_cap) {
+                cam.origin.rotation.yaw -= sdl_event.motion.xrel * mouse_sensi;
+                cam.origin.rotation.pitch = std::clamp(cam.origin.rotation.pitch - sdl_event.motion.yrel * mouse_sensi, -1.54f, 1.54f);
             }
         }
 
-        std::cout << "FPS: " << 1.0f / delta << "\n";
+        int num_keys;
+        const bool* key_state = SDL_GetKeyboardState(&num_keys);
+
+        if (key_state[SDL_SCANCODE_W]) epr::logic::motion::Move(epr::logic::motion::direction::FORWARD, cam.origin, 3.2f, delta);
+        if (key_state[SDL_SCANCODE_S]) epr::logic::motion::Move(epr::logic::motion::direction::BACKWARD, cam.origin, 3.2f, delta);
+        if (key_state[SDL_SCANCODE_A]) epr::logic::motion::Move(epr::logic::motion::direction::LEFT, cam.origin, 3.2f, delta);
+        if (key_state[SDL_SCANCODE_D]) epr::logic::motion::Move(epr::logic::motion::direction::RIGHT, cam.origin, 3.2f, delta);
+        if (key_state[SDL_SCANCODE_SPACE]) epr::logic::motion::Move(epr::logic::motion::direction::UP, cam.origin, 3.2f, delta);
+        if (key_state[SDL_SCANCODE_LSHIFT]) epr::logic::motion::Move(epr::logic::motion::direction::DOWN, cam.origin, 3.2f, delta);
 
         prev_frame = actual_frame;
 
-        mesh = node.to_world();
-
         render.render_mesh(mesh, cam, viewport, render_data);
-        disp.draw_viewport(0, 0, viewport);
-        disp.show();
+        sdl_window.show_viewport(viewport);
     }
+    SDL_SetWindowRelativeMouseMode(sdl_window.sdl_window, false);
 
     return 0;
 }
