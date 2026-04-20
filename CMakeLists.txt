@@ -25,7 +25,7 @@ set(epr_dependencies
 )
 
 foreach(lib ${epr_dependencies})
-    find_package(${lib} REQUIRED)
+    find_package(${lib})
 
     if(${lib}_FOUND)
         string(TOUPPER ${lib} LIB_NAME_UPPER)

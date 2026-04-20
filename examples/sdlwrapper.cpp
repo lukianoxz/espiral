@@ -2,16 +2,18 @@
 #include <algorithm>
 
 #ifndef EPR_HAS_SDL3
-    #define WARNING std::cerr << "Error, you dont have sdl3\n"; std::exit(-1);
+
+int main() {
+    std::cerr << "Error, you dont have sdl3\n";
+    std::exit(-1);
+}
+
 #else
-    #define WARNING
-#endif
 
 #define EPR_WIDTH 640
 #define EPR_HIGH 360
 
 int main() {
-    WARNING
     epr::graphics::SDLWrapper sdl_window(SDL_INIT_VIDEO, EPR_WIDTH, EPR_HIGH, "espiral", 2);
 
     epr::graphics::Viewport viewport(EPR_WIDTH, EPR_HIGH);
@@ -100,3 +102,5 @@ int main() {
 
     return 0;
 }
+
+#endif
